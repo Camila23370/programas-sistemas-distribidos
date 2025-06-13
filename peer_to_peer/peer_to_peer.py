@@ -1,7 +1,7 @@
-import socket
-import threading
+import socket 
+import threading # ejecuta varias tareas al mismo tiempo
 import sys
-import time
+import time # relacionado al tiempo
 
 # Función para manejar conexiones entrantes
 def handle_peer(conn, addr):
@@ -37,6 +37,17 @@ def connect_to_peers(peers, message):
                 print(f"[{host}:{port}] ⇐ {response}")
         except Exception as e:
             print(f"[!] No se pudo conectar a {host}:{port} - {e}")
+# ----------------------- MODIFICACIÓN PARA ARCHIVOS DE TEXTO--------------------------- # 
+# Función para poder leer el archivo .txt
+def leer_archivo(ruta):
+    import os
+    try: 
+        with open(ruta, 'r', encoding='utf-8') as f:
+            return f.read()
+    except Exception as e:
+        print(f"[!] Error al leer archivo: {e}")
+        return None
+# utf-8 = estándar de codificación que permite mostrar todos los caracteres
 
 # Programa principal
 if __name__ == "__main__":
@@ -56,7 +67,19 @@ if __name__ == "__main__":
 
     # Enviar mensaje a los peers conocidos
     while True:
-        mensaje = input("Mensaje a enviar (o 'exit'): ")
+        mensaje = input("Mensaje a enviar (o '@file:archivo.txt' o 'exit'): ")
         if mensaje.lower() == 'exit':
             break
-        connect_to_peers(peers, mensaje)
+# estructura en caso de que sea archivo
+# @file.archivo.txt 
+# @file = solo para inidcar que es archivo
+# archivo = nombre del archivo 
+
+        if mensaje.startswith("@file:"): # en caso de ser archivo lo que se va a mandar si el msj empieza con @file
+            ruta = mensaje[6:] # quita el @file: para que solo se lea el nombre del archivo
+            contenido = leer_archivo(ruta)
+            if contenido is not None:
+                mensaje = f"[Archivo: {ruta}]\n{contenido}" # muestra el nombre y el contenido del .txt
+            else:
+                continue
+    connect_to_peers(peers, mensaje)
