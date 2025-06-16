@@ -37,17 +37,16 @@ def connect_to_peers(peers, message):
                 print(f"[{host}:{port}] ⇐ {response}")
         except Exception as e:
             print(f"[!] No se pudo conectar a {host}:{port} - {e}")
-# ----------------------- MODIFICACIÓN PARA ARCHIVOS DE TEXTO--------------------------- # 
+#-----------TAREA: EXPANDIR EL CÓDIGO PARA ARCHIVOS TXT------------#
 # Función para poder leer el archivo .txt
 def leer_archivo(ruta):
-    import os
     try: 
         with open(ruta, 'r', encoding='utf-8') as f:
             return f.read()
-    except Exception as e:
+    except Exception as e: # en caso de que no se pueda leer
         print(f"[!] Error al leer archivo: {e}")
         return None
-# utf-8 = estándar de codificación que permite mostrar todos los caracteres
+# utf-8 es para la decodificación de los caracteres y que puedan ser leidos 
 
 # Programa principal
 if __name__ == "__main__":
@@ -65,21 +64,31 @@ if __name__ == "__main__":
     # Dar tiempo a que el servidor escuche
     time.sleep(1)
 
+    print("Acciones:")
+    print(" 1. Mensaje")
+    print(" 2.'@file:archivo.txt' para enviar un archivo")
+    print(" 3. 'exit' ")
+
     # Enviar mensaje a los peers conocidos
     while True:
-        mensaje = input("Mensaje a enviar (o '@file:archivo.txt' o 'exit'): ")
+        mensaje = input("\nMensaje a enviar (o '@file:archivo.txt' o 'exit'): ")
+        
         if mensaje.lower() == 'exit':
+            print("[INFO] Saliendo...")
             break
-# estructura en caso de que sea archivo
-# @file.archivo.txt 
-# @file = solo para inidcar que es archivo
-# archivo = nombre del archivo 
-
-        if mensaje.startswith("@file:"): # en caso de ser archivo lo que se va a mandar si el msj empieza con @file
-            ruta = mensaje[6:] # quita el @file: para que solo se lea el nombre del archivo
+        
+        # si es un archivo
+        if mensaje.startswith("@file:"):
+            ruta = mensaje[6:]  # quita el @file: para que solo se lea el nombre del archivo, son 6 caracteres
+            print(f"[INFO] leyendo archivo: {ruta}")
             contenido = leer_archivo(ruta)
             if contenido is not None:
-                mensaje = f"[Archivo: {ruta}]\n{contenido}" # muestra el nombre y el contenido del .txt
+                mensaje = f"[ARCHIVO: {ruta}]\n{contenido}"
+                print(f"Archivo leído")
             else:
+                print("No se pudo leer el archivo.")
                 continue
-    connect_to_peers(peers, mensaje)
+        
+        # envio de mensaje
+        print(f"Enviando mensaje a {len(peers)} peer(s)...")
+        connect_to_peers(peers, mensaje)

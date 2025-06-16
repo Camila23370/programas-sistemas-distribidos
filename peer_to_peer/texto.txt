@@ -1,0 +1,13 @@
+Qué es la arquitectura Peer To Peer (P2P)
+Todos los nodos son iguales y pueden actuar como clientes y servidores. Los recursos se comparten directamente entre los nodos sin necesidad de ser un servidor central.
+
+**Ventajas:**
+
+- Eficiencia: La comunicación es directa entre nodos reduce la latencia y mejora el rendimiento. Es decir, el tiempo de respuesta es menor o tiene que ser el menor posible.
+- Flexibilidad:  Los nodos pueden unirse o abandonar la red en cualquier momento.
+
+**Desafíos:** 
+
+- Seguridad: La falta de un servidor central puede dificultar la implementación de medidas de seguridad efectivas.
+- Consistencia: Mantener la consistencia de los datos entre nodos puede ser complicado, especialmente entre redes grandes y dinámicas.
+- Gestión de recursos: La gestión eficiente de recursos compartidos puede ser un desafío, ya que no hay un control centralizado.
