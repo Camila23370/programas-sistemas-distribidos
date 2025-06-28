@@ -1,0 +1,79 @@
+swagger: "2.0"
+info:
+  title: API de Datos Ambientales
+  description: Consulta datos ambientales recolectados por sensores urbanos.
+  version: "1.0.0"
+host: localhost:5002
+basePath: /
+schemes:
+  - http
+paths:
+  /collector/{barrio_id}:
+    get:
+      summary: Últimos datos ambientales por tipo en un barrio
+      parameters:
+        - name: barrio_id
+          in: path
+          required: true
+          type: string
+          description: Nombre del barrio (ej. condesa)
+      responses:
+        200:
+          description: Datos ambientales más recientes por tipo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DatoAmbiental'
+        404:
+          description: Barrio no encontrado o sin datos
+
+  /storage:
+    get:
+      summary: Obtener todos los datos almacenados por barrio
+      responses:
+        200:
+          description: Datos agrupados por barrio
+          schema:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                $ref: '#/definitions/DatoAmbiental'
+
+  /alert:
+    get:
+      summary: Consultar alertas ambientales registradas
+      responses:
+        200:
+          description: Lista de alertas
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AlertaAmbiental'
+
+definitions:
+  DatoAmbiental:
+    type: object
+    properties:
+      barrio_id:
+        type: string
+      tipo:
+        type: string
+        enum: [temperatura, humedad, calidad_aire]
+      valor:
+        type: number
+      timestamp:
+        type: string
+        format: date-time
+
+  AlertaAmbiental:
+    type: object
+    properties:
+      barrio_id:
+        type: string
+      tipo:
+        type: string
+      valor:
+        type: number
+      mensaje:
+        type: string
