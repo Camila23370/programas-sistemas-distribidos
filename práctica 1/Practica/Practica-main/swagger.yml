@@ -3,13 +3,13 @@ info:
   title: API de Datos Ambientales
   description: Consulta datos ambientales recolectados por sensores urbanos.
   version: "1.0.0"
-host: localhost:5002
-basePath: /
+host: localhost:5002 # la API se ejecuta en el puerto 5002
+basePath: / # la raíz de la API
 schemes:
-  - http
+  - http # protocolo usado para acceder a la API
 paths:
-  /collector/{barrio_id}:
-    get:
+  /collector/{barrio_id}: # obtiene los últimos datos de un barrio
+    get: # el método GET solo pide la información, solo lee
       summary: Últimos datos ambientales por tipo en un barrio
       parameters:
         - name: barrio_id
@@ -27,7 +27,7 @@ paths:
         404:
           description: Barrio no encontrado o sin datos
 
-  /storage:
+  /storage: # obtiene todos los datos almacenados agrupados por barrio 
     get:
       summary: Obtener todos los datos almacenados por barrio
       responses:
@@ -40,8 +40,8 @@ paths:
               items:
                 $ref: '#/definitions/DatoAmbiental'
 
-  /alert:
-    get:
+  /alert: # consulta las alertas ambientales registradas
+    get: # pide información
       summary: Consultar alertas ambientales registradas
       responses:
         200:
@@ -77,3 +77,11 @@ definitions:
         type: number
       mensaje:
         type: string
+# en este archivo contiene el nombre, versión y dirección de la API
+# puerto donde se ejecuta y la raíz de la API
+# tenemos las rutas disponibles y que es lo que hace cada una 
+# explica como se va a interactuar, que es lo que se solicita y que se va a recibir a cambio
+# 200 todo con éxito 
+# 404 error
+# POST envia o crea información
+# esta API solo esta diseñada para consultar información únicamente 

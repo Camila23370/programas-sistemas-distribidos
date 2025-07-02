@@ -50,12 +50,14 @@ def recibir_dato():
     datos_recolectados.setdefault(barrio_id, []).append(data)
 
     #enviar al servicio de almacenamiento:
+    # intenta envuar el dato "try"
     try:
         requests.post(STORAGE_SERVICE_URL, json=data, timeout=2)
     except Exception as e:
         logging.error(f"Error al enviar al storage_service: {e}")
-
+    
     #mensaje de alerta:
+    # si es mayor a 35 la temperatura, manda una alerta, solo si es temperatura
     if tipo == "temperatura" and valor > 35:
         alerta = {
             "barrio_id": barrio_id,
@@ -68,7 +70,7 @@ def recibir_dato():
         except Exception as e:
             logging.error(f"Error al enviar al alert_service: {e}")
 
-    return jsonify({"mensaje": "Dato recibido y reenviado"}), 200
+    return jsonify({"mensaje": "Dato recibido y reenviado"}), 200 #regresa el mensaje
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5002)
